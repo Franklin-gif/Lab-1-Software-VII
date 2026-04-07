@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Círculo</title>
+    <title>Laboratorio #1 - Círculo</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -15,65 +15,88 @@
             margin: 0;
         }
         .container {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             text-align: center;
-            width: 300px;
+            width: 350px;
+            border-top: 5px solid #d4af37; 
         }
-        h2 { color: #333; }
+        h2 { color: #333; margin-bottom: 20px; }
+        .instruccion { font-size: 0.9em; color: #666; margin-bottom: 15px; }
+        
         input[type="number"] {
-            width: 80%;
-            padding: 10px;
+            width: 100%;
+            padding: 12px;
             margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
         }
         input[type="submit"] {
-            background-color: #007bff;
-            color: white;
+            background-color: #d4af37;
+            color: #000;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s;
+            font-weight: bold;
+            width: 100%;
+            transition: 0.3s;
         }
         input[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: #b8962e;
         }
         .resultado {
             margin-top: 20px;
-            padding: 10px;
-            background-color: #e9f7ef;
-            border-left: 5px solid #28a745;
+            padding: 15px;
+            background-color: #fcfcfc;
+            border: 1px solid #d4af37;
+            border-radius: 8px;
             text-align: left;
         }
+        .valor { color: #d4af37; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Cálculo de Círculo</h2>
+    <h2>Problema #1</h2>
+    <p class="instruccion">Cálculo de Área y Perímetro</p>
+    
     <form method="POST" action="">
-        <label for="radio">Introduce el radio:</label>
-        <input type="number" step="any" name="radio" id="radio" required placeholder="Ej: 5.5">
-        <input type="submit" value="Calcular Ahora">
+        <label for="radio">Introduce el radio (dato real):</label>
+        <input type="number" step="any" name="radio" id="radio" required placeholder="0.00">
+        <input type="submit" value="Calcular Resultados">
     </form>
 
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $radio = $_POST['radio'];
         
-        // Cálculos
-        $area = pi() * pow($radio, 2);
-        $perimetro = 2 * pi() * $radio;
+       
+        $radio_crudo = trim($_POST['radio']);
 
-        echo "<div class='resultado'>";
-        echo "<strong>Radio:</strong> $radio <br>";
-        echo "<strong>Área:</strong> " . number_format($area, 2) . "<br>";
-        echo "<strong>Perímetro:</strong> " . number_format($perimetro, 2);
-        echo "</div>";
+        
+        $radio = filter_var($radio_crudo, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+
+        if ($radio > 0) {
+            
+           
+            $area = pi() * pow($radio, 2);
+            
+            
+            $perimetro = 2 * pi() * $radio;
+
+            
+            echo "<div class='resultado'>";
+            echo "<strong>Radio ingresado:</strong> <span class='valor'>$radio</span><br><hr>";
+            echo "<strong>Área del círculo:</strong> " . number_format($area, 2) . "<br>";
+            echo "<strong>Perímetro:</strong> " . number_format($perimetro, 2) . "<br>";
+            echo "</div>";
+        } else {
+            echo "<div class='resultado' style='border-color:red; color:red;'>Por favor, ingrese un radio válido mayor a cero.</div>";
+        }
     }
     ?>
 </div>
